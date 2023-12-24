@@ -3,6 +3,8 @@ package util.constants.ru;
 import lombok.experimental.UtilityClass;
 import util.ReadProperties;
 
+import java.nio.file.Path;
+
 @UtilityClass
 public class PdfUserConstants {
     public static String NAME = "Имя пользователя: ";
@@ -12,8 +14,8 @@ public class PdfUserConstants {
 
     public static String NEW_LINE = "\n";
 
-    public static String FONT_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\font\\DejaVuSans.ttf";
-    public static String BACKGROUND_PATH = "src/main/resources/Clevertec_Template.pdf";
+    public static String FONT_PATH =  "font/arial.ttf";
+    public static String BACKGROUND_PATH = "Clevertec_Template.pdf";
     public static String SAVE_PATH = "";
 
     public static String ENCODING = "cp1251";
