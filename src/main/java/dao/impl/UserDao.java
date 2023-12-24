@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static util.constants.SqlQueryConstants.*;
+import static util.constants.SqlQueryConstants.SQL_GET_ALL_USERS_PAGED;
 
 /**
  * Implementation of the DAO (Data Access Object) for managing User entities.
@@ -59,6 +60,21 @@ public class UserDao implements Dao<User> {
     @Override
     public List<User> getAll() {
         try (var statement = prepare(SQL_GET_ALL_USERS)) {
+            try (var rs = statement.executeQuery()) {
+                List<User> users = new ArrayList<>();
+                while (rs.next()) {
+                    users.add(buildUser(rs));
+                }
+                return users;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to get all users");
+        }
+    }
+
+    @Override
+    public List<User> getAll(int size, int offset) {
+        try (var statement = prepare(SQL_GET_ALL_USERS_PAGED, size, offset)) {
             try (var rs = statement.executeQuery()) {
                 List<User> users = new ArrayList<>();
                 while (rs.next()) {

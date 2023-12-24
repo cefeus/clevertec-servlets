@@ -12,7 +12,9 @@ repositories {
     mavenCentral()
 }
 
-
+war {
+    archiveFileName = "clevertec-servlet.war"
+}
 
 java {
     sourceCompatibility = JavaLanguageVersion.of(17)
@@ -56,6 +58,8 @@ dependencies {
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testImplementation 'org.projectlombok:lombok:1.18.28'
+
+    compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
 
     implementation "com.itextpdf:kernel:${itextpdfVersion}"
     implementation "com.itextpdf:layout:${itextpdfVersion}"

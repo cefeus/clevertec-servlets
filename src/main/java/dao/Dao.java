@@ -10,6 +10,8 @@ public interface Dao<T> {
 
     List<T> getAll();
 
+    List<T> getAll(int size, int offset);
+
     void save(T t);
 
     void delete(UUID id);
