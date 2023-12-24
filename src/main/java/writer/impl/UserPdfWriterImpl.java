@@ -13,6 +13,7 @@ import util.constants.ru.PdfUserConstants;
 import writer.Writer;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import static util.constants.ru.PdfUserConstants.BACKGROUND_PATH;
@@ -32,6 +33,16 @@ public class UserPdfWriterImpl implements Writer<UserDto> {
         try (var document = new Document(new PdfDocument(new PdfReader(BACKGROUND_PATH), new PdfWriter(SAVE_PATH + path)));) {
             document.setFont(font);
             document.add(new Paragraph(build(source)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void print(String source, OutputStream os) {
+        try (var document = new Document(new PdfDocument(new PdfReader(BACKGROUND_PATH), new PdfWriter(os)));) {
+            document.setFont(font);
+            document.add(new Paragraph(source));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
