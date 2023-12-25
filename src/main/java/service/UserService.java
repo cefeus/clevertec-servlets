@@ -12,8 +12,11 @@ public interface UserService {
 
     List<UserDto> getAll();
 
+    List<UserDto> getAll(int size, int offset);
+
     void create(UserDto productDto);
 
     void update(UUID id, UserDto productDto);
+
     void delete(UUID id);
 }

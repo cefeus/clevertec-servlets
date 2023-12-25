@@ -4,7 +4,6 @@ import dao.Dao;
 import dao.impl.UserDao;
 import dto.UserDto;
 import entity.User;
-import exception.UserNotFoundException;
 import mapper.UserMapper;
 import mapper.UserMapperImpl;
 import service.UserService;
@@ -42,6 +41,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAll() {
         List<User> received = userDao.getAll();
+        return received.stream()
+                .map(u -> mapper.toUserDto((User) u))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> getAll(int size, int offset) {
+        List<User> received = userDao.getAll(size, offset);
         return received.stream()
                 .map(u -> mapper.toUserDto((User) u))
                 .collect(Collectors.toList());

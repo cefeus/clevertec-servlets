@@ -1,12 +1,13 @@
 #db
 USERNAME: postgres
-PASSWORD: 123
+PASSWORD: postgres
 URL: jdbc:postgresql://localhost:5432/clevertec-reflection
 DRIVER: org.postgresql.Driver
 SCHEMA: reflection-task
 
 #flyway
 MIGRATION_LOCATION: filesystem:src/main/resources/migration
+USE_MIGRATION: true
 
 #cache
 CACHE: LFU
@@ -15,3 +16,7 @@ CAPACITY: 100
 #pdf
 USER_PDF_BACKGROUND_PATH: "src/main/resources/Clevertec_Template.pdf"
 PDF_SAVE_PATH: "resources/"
+
+#servlet
+PAGESIZE: 20
+SERVLET_ENCODING: UTF-8

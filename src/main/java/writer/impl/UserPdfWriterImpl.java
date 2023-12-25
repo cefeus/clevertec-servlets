@@ -13,6 +13,9 @@ import util.constants.ru.PdfUserConstants;
 import writer.Writer;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.List;
 
 import static util.constants.ru.PdfUserConstants.BACKGROUND_PATH;
@@ -23,13 +26,21 @@ import static util.constants.ru.PdfUserConstants.SAVE_PATH;
 public class UserPdfWriterImpl implements Writer<UserDto> {
 
     private PdfFont font;
+    private String TEMPLATE_PATH;
+    private String FONT;
 
     {
         initFont();
+        try {
+            TEMPLATE_PATH = Path.of(ClassLoader.getSystemResource(BACKGROUND_PATH).toURI()).toAbsolutePath().toString();
+            FONT = Path.of(ClassLoader.getSystemResource(FONT_PATH).toURI()).toAbsolutePath().toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void print(UserDto source, String path) {
-        try (var document = new Document(new PdfDocument(new PdfReader(BACKGROUND_PATH), new PdfWriter(SAVE_PATH + path)));) {
+        try (var document = new Document(new PdfDocument(new PdfReader(TEMPLATE_PATH), new PdfWriter(SAVE_PATH + path)));) {
             document.setFont(font);
             document.add(new Paragraph(build(source)));
         } catch (IOException e) {
@@ -37,8 +48,18 @@ public class UserPdfWriterImpl implements Writer<UserDto> {
         }
     }
 
+    @Override
+    public void print(String source, OutputStream os) {
+        try (var document = new Document(new PdfDocument(new PdfReader(TEMPLATE_PATH), new PdfWriter(os)));) {
+            document.setFont(font);
+            document.add(new Paragraph(source));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void print(List<UserDto> source, String path) {
-        try (var document = new Document(new PdfDocument(new PdfReader(BACKGROUND_PATH), new com.itextpdf.kernel.pdf.PdfWriter(SAVE_PATH + path)));) {
+        try (var document = new Document(new PdfDocument(new PdfReader(TEMPLATE_PATH), new com.itextpdf.kernel.pdf.PdfWriter(SAVE_PATH + path)));) {
             document.setFont(font);
             for (UserDto dto : source) {
                 document.add(new Paragraph(build(dto)));
@@ -50,7 +71,7 @@ public class UserPdfWriterImpl implements Writer<UserDto> {
 
     private void initFont() {
         try {
-            font = PdfFontFactory.createFont(FONT_PATH, ENCODING);
+            font = PdfFontFactory.createFont(FONT, ENCODING);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
